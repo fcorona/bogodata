@@ -1,0 +1,11 @@
+.form-signin {
+
+    max-width: 330px;
+}
+
+.message-box {
+
+    padding-left: 20px;
+    max-width: 330px;
+    word-wrap: break-word;
+}
