@@ -1,0 +1,21 @@
+<div class="container">
+    <table>
+        <tr>
+            <td>
+                <form class="form-signin" role="form">
+                    <h2 class="form-signin-heading">Welcome to the E3</h2>
+                    <input type="name" class="form-control" placeholder="Name" ng-model="name" required="" autofocus="">
+                    <input type="email" class="form-control" placeholder="Email address" ng-model="username" required="">
+                    <input type="password" class="form-control" placeholder="Password" ng-model="password" required="">
+                    <br/>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="createUser()">Register</button>
+                </form>
+            </td>
+            <td>
+                <div class="message-box" ng-show="showErrorMessage">
+                    <p class="alert alert-danger">{{ errorMessage }}</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

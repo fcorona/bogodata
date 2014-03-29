@@ -9,3 +9,8 @@
     max-width: 330px;
     word-wrap: break-word;
 }
+
+.middle-icon {
+
+    vertical-align: middle;
+}
