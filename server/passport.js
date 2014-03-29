@@ -59,7 +59,7 @@ module.exports = function(passport) {
 		clientID			: config.facebook.id,
 		clientSecret	: config.facebook.secret,
 		callbackURL	 : '/auth/facebook/callback',
-		profileFields : ['id', 'displayName', 'provider', 'photos']
+        profileFields: ['id', 'displayName', 'photos']
 	}, function(accessToken, refreshToken, profile, done) {
 		// El campo 'profileFields' nos permite que los campos que almacenamos
 		// se llamen igual tanto para si el usuario se autentica por Twitter o
