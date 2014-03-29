@@ -26,10 +26,9 @@ BogoData.loadLayers = function () {
 
             var templateLoaded = function (template) {
 
-                var html = $.tmpl(template, data).html();
+                var html = $.tmpl(template, data).appendTo("#selectLayers");
 
                 var selectLayersDiv = $("#selectLayers");
-                selectLayersDiv.append(html);
                 selectLayersDiv.dialog({
                     dialogClass: "no-close"
                 });
@@ -142,13 +141,21 @@ BogoData.setUpActions = function () {
 
 BogoData.initMap = function () {
     var mapCanvas = document.getElementById('map_canvas');
+
+    var bogota = new google.maps.LatLng(4.670332, -74.086028);
+
     var mapOptions = {
-        center: new google.maps.LatLng(4.670332, -74.086028),
+        center: bogota,
         zoom: 12,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
     var map = new google.maps.Map(mapCanvas, mapOptions);
+
+    var ctaLayer = new google.maps.KmlLayer('http://bogodata.org/datasets/Seguridad2/kml');
+    ctaLayer.setMap(map);
+
+    map.setCenter(bogota);
 
     BogoData.map = map;
 
