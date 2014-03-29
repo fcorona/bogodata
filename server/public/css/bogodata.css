@@ -7,3 +7,7 @@ body { height: 100%; margin: 0px; padding: 0px }
 .nav-background {
     background-color:rgba(255,255,255,0.5);
 }
+
+.no-close .ui-dialog-titlebar-close {
+    display: none;
+}
