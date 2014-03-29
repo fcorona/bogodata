@@ -14,8 +14,21 @@ BogoData.markersArray = [];
 
 BogoData.init = function () {
     BogoData.initMap();
+    BogoData.showDoc();
     BogoData.loadLayers();
     BogoData.setRoutes();
+
+}
+
+BogoData.showDoc = function(){
+    $("#showDoc").dialog({
+        modal: true,
+        width:750
+    });
+
+    $(function() {
+        $('.jcarousel').jcarousel();
+    });
 
 }
 
@@ -111,7 +124,9 @@ BogoData.loadLayers = function () {
 
                 var selectLayersDiv = $("#selectLayers");
                 selectLayersDiv.dialog({
-                    dialogClass: "no-close"
+                    dialogClass: "no-close",
+                    title: "Datos",
+                    position: "left"
                 });
             }
 
