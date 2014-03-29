@@ -29,6 +29,7 @@ BogoData.toggleLayer = function (id, name) {
 }
 
 BogoData.markers = [];
+BogoData.infoWindow;
 
 BogoData.togglePoints = function (id, name, hide) {
     if (!hide) {
@@ -45,11 +46,38 @@ BogoData.togglePoints = function (id, name, hide) {
 
                 //then repopulate
                 $.each(data.reports, function () {
+
+                    var image = '/img/icons/pin-robo.png';
+
+
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(this.latitude, this.longitude),
                         map: BogoData.map,
-                        title: this.title
+                        title: this.title,
+                        icon: image
                     });
+
+                    var that = this;
+
+                    google.maps.event.addListener(marker, 'click', function() {
+
+                        var templateLoaded = function (template) {
+
+                            var html = $.tmpl(template, {that: that, data: data}).html();
+
+                            if (BogoData.infoWindow) {
+                                BogoData.infoWindow.close();
+                            }
+
+                            BogoData.infoWindow = new google.maps.InfoWindow({
+                                content: html
+                            });
+                            BogoData.infoWindow.open(BogoData.map,marker);
+                        }
+
+                        $.get('/templates/infowindow.html', templateLoaded);
+
+                    })
 
                     if (typeof BogoData.markers[name] == 'undefined') {
                         BogoData.markers[name] = [];
