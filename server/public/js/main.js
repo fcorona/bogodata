@@ -17,7 +17,6 @@ BogoData.init = function () {
     BogoData.loadLayers();
     BogoData.setRoutes();
 
-    BogoData.getHurtoAPersonas();
 }
 
 BogoData.toggleLayer = function (id, name) {
@@ -290,6 +289,8 @@ BogoData.report = function () {
 
 BogoData.related = function(){
 
+    BogoData.getHurtoAPersonas();
+
     $("#stats").show();
 
     $("#stats").dialog({
@@ -305,10 +306,15 @@ BogoData.cancelReport = function () {
 BogoData.getHurtoAPersonas = function() {
 
 
-    //var apis = []
+    var apis = ['http://api.bogotacomovamos.org/api/datas/77/?key=comovamos/',
+                        'http://api.bogotacomovamos.org/api/datas/82/?key=comovamos/',
+                        'http://api.bogotacomovamos.org/api/datas/83/?key=comovamos/',
+                        'http://api.bogotacomovamos.org/api/datas/78/?key=comovamos/',
+                        'http://api.bogotacomovamos.org/api/datas/78/?key=comovamos/'
+    ];
 
     $.ajax({
-        url: "http://api.bogotacomovamos.org/api/datas/82/?key=comovamos",
+        url: apis[Math.floor(Math.random() * apis.length)],
         type: "GET"
     }).done(function (data) {
 
