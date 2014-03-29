@@ -32,6 +32,6 @@ var DatasetSchema = new Schema({
 
 module.exports.model = function(){
     var Dataset = mongoose.model('Dataset', DatasetSchema);
-}
+};
 
 module.exports.schema = DatasetSchema;

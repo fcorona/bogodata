@@ -8,7 +8,7 @@ var passport = require('passport');
 // models import and passport configuration
 require('./models/user').model();
 //require('./models/dataset').model();
-require('./passport')(passport);
+require('./domain/passport')(passport);
 
 //MongoDB connection
 mongoose.connect('mongodb://localhost:27017/bogodata', function (err, res) {
@@ -25,23 +25,18 @@ app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 
-
 app.use(express.cookieParser());
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(express.methodOverride());
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use(express.session({ secret: 'bogodata2014xyz' }));
-
 
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
-
 
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
@@ -49,7 +44,8 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 
-var authRoutes = require('./routes/auth')(app, passport);
+var authRoutes = require('./routes/authRoutes')(app, passport);
+var datasetRoutes = require('./routes/datasetRoutes')(app, passport);
 
 // server start
 app.listen(app.get('port'), function () {
