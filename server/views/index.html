@@ -16,22 +16,22 @@
 <div id="nav">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 nav-background">
                 <div id="logo"><img src="/img/bogodata.png"/></div>
             </div>
-            <div class="col-md-1">
-                <a id="signInButton" onclick="BogoData.showSignIn()">
-                    <p><i class="fa fa-sign-in fa-5x"></i></p>
+            <div class="col-md-1 nav-background">
+                <a id="signInButton" onclick="BogoData.showSignIn()" href="#">
+                    <img src="/img/icons/icon-inicio.png"/>
                 </a>
             </div>
-            <div class="col-md-1">
-                <a id="signOutButton" style="display: none;" href="/logout">
-                    <p><i class="fa fa-caret-square-o-left fa-5x"></i></p>
-                </a>
-            </div>
-            <div class="col-md-1">
+            <div class="col-md-1 nav-background">
                 <a id="reportButton" href="#" onclick="BogoData.placeMarker()">
-                    <p><i class="fa fa-eye fa-5x"></i></p>
+                    <img src="/img/icons/icon-filtrar.png"/>
+                </a>
+            </div>
+            <div class="col-md-1 nav-background">
+                <a id="signOutButton" style="display: none;" href="/logout">
+                    <img src="/img/icons/icon-salir.png"/>
                 </a>
             </div>
         </div>

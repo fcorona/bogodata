@@ -5,7 +5,8 @@ var BogoData = {};
 
 BogoData.options = {
     passphrase: 'dg76sdgdfg',
-    localStorageItem: 'BgD0'
+    localStorageItem: 'BgD0',
+    localStorageDataset: 'DseT'
 };
 
 BogoData.markersArray = [];
@@ -69,11 +70,11 @@ BogoData.setUpActions = function () {
 
             var placeMarker = function () {
 
-                if(BogoData.marker){
+                if (BogoData.marker) {
                     BogoData.marker.setMap(null);
                 }
 
-               BogoData.marker = new google.maps.Marker({
+                BogoData.marker = new google.maps.Marker({
                     position: event.latLng,
                     draggable: true,
                     map: BogoData.map
@@ -96,6 +97,13 @@ BogoData.setUpActions = function () {
                     });
 
                     options.change(function () {
+                        var selected;
+                        $.each(data, function () {
+                            if (this._id === options.val()) {
+                                localStorage.setItem(BogoData.options.localStorageDataset, JSON.stringify(this));
+                            }
+                        });
+
                         selectDatasetDialog.dialog('close');
                         placeMarker();
                     });
@@ -126,11 +134,33 @@ BogoData.initMap = function () {
     BogoData.setUpActions();
 }
 
-BogoData.report = function(){
-    console.log("**************")
+BogoData.report = function () {
+
+    var postData = {
+        latitude: BogoData.marker.position.k,
+        longitude: BogoData.marker.position.A,
+        detail: $("#detailInput").val(),
+        data: {
+            tipoRobo: $("#tipoRobo").val()
+        }
+    }
+
+    var selectedDataset = JSON.parse(localStorage.getItem(BogoData.options.localStorageDataset));
+
+    $.ajax({
+        url: "/datasets/" + selectedDataset.name + "/reports",
+        type: "POST",
+        data: postData
+    }).done(function (data) {
+            console.log(data);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        });
 }
 
-BogoData.cancelReport = function(){
+BogoData.cancelReport = function () {
     BogoData.marker.setMap(null);
 }
 
