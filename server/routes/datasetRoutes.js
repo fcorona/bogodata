@@ -13,4 +13,7 @@ module.exports = function(app, passport) {
     app.get('/datasets/:datasetName/reports', datasetBusiness.getReportsFromDataset);
 
     app.get('/datasets/:datasetName/reports/:reportId', datasetBusiness.getReportFromDataset);
+
+    // Get KML from dataset
+    app.get('/datasets/:datasetName/kml', datasetBusiness.getDatasetKml);
 };

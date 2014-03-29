@@ -153,3 +153,57 @@ module.exports.getReportFromDataset = function(req, res) {
     var reportId = req.params.reportId;
     Dataset.findOne({ name: datasetName }, getDatasetByNameCallback);
 };
+
+function getKmlCoordinates(datasetReports) {
+
+    var coordinatesArray = [];
+
+    for (var i = 0; i < datasetReports.length; i++) {
+
+        var reportCoordinates = datasetReports[i].latitude + ',' + datasetReports[i].longitude + ',' + 0;
+        coordinatesArray.push(reportCoordinates);
+    }
+
+    return coordinatesArray;
+};
+
+function getJsonKmlFromDataset(dataset) {
+
+    var jsonKml = {
+
+        name: dataset.name,
+        description: dataset.description,
+        coordinates: getKmlCoordinates(dataset.reports)
+    };
+
+    return jsonKml;
+};
+
+module.exports.getDatasetKml = function(req, res) {
+
+    var getDatasetByNameCallback = function(error, dataset) {
+
+        if (error) {
+            console.error(error);
+            res.status(500).json(error);
+        } else {
+
+            var fs = require('fs');
+            var ejs = require('ejs');
+            var jsonKml = getJsonKmlFromDataset(dataset);
+
+            var readFileCallcack = function(error, template) {
+
+                var content = ejs.render(template, jsonKml);
+                res.write(content);
+                res.end();
+            };
+
+            fs.readFile('./views/kml-template.ejs', 'utf-8', readFileCallcack);
+        }
+    };
+
+    var datasetName = req.params.datasetName;
+    var reportId = req.params.reportId;
+    Dataset.findOne({ name: datasetName }, getDatasetByNameCallback);
+};
