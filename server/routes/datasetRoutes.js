@@ -10,5 +10,7 @@ module.exports = function(app, passport) {
 
     app.post('/datasets/:datasetId/reports', datasetBusiness.addReportToDataset);
 
+    app.get('/datasets/:datasetId/reports', datasetBusiness.getReportsFromDataset);
+
     app.get('/datasets/:datasetId/reports/:reportId', datasetBusiness.getReportFromDataset);
 };

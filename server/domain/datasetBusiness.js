@@ -118,6 +118,22 @@ module.exports.addReportToDataset = function(req, res) {
     Dataset.findById(datasetId, getDatasetByIdCallback);
 };
 
+module.exports.getReportsFromDataset = function(req, res) {
+
+    var getDatasetByIdCallback = function(error, dataset) {
+
+        if (error) {
+            console.error(error);
+            res.status(500).json(error);
+        } else {
+            res.status(200).json(dataset.reports);
+        }
+    };
+
+    var datasetId = req.params.datasetId;
+    Dataset.findById(datasetId, getDatasetByIdCallback);
+};
+
 module.exports.getReportFromDataset = function(req, res) {
 
     var getDatasetByIdCallback = function(error, dataset) {
