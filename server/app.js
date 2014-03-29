@@ -1,5 +1,4 @@
 var express = require('express');
-var routes = require('./routes');
 var path = require('path');
 
 var mongoose = require('mongoose');
@@ -19,9 +18,9 @@ mongoose.connect('mongodb://localhost:27017/bogodata', function (err, res) {
 // init express app
 var app = express();
 
-app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('port', process.env.PORT || 80);
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 
@@ -47,7 +46,9 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
+app.get('/',  function (req, res) {
+    res.sendfile('./views/index.html');
+});
 
 var authRoutes = require('./routes/auth')(app, passport);
 
