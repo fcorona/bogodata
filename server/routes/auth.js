@@ -19,7 +19,7 @@ module.exports = function (app, passport) {
     });
 // Ruta de callback, a la que redirigirá tras autenticarse con Facebook.
 // En caso de fallo redirige a otra vista '/login'
-    app.get('/auth/facebook/callback', passport.authenticate('facebook'), , function (req, res) {
+    app.get('/auth/facebook/callback', passport.authenticate('facebook') , function (req, res) {
         res.redirect("http://bogodata.org");
     });
 }
