@@ -114,6 +114,9 @@ module.exports.addReportToDataset = function(req, res) {
     };
 
     var datasetName = req.params.datasetName;
+
+    console.log(datasetName);
+
     var newReport = req.body;
     Dataset.findOne({ name: datasetName }, getDatasetByNameCallback);
 };
