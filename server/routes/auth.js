@@ -14,13 +14,12 @@ module.exports = function (app, passport) {
     app.get('/auth/facebook', passport.authenticate('facebook'));
 // Ruta de callback, a la que redirigirá tras autenticarse con Twitter.
 // En caso de fallo redirige a otra vista '/login'
-    app.get('/auth/twitter/callback', passport.authenticate('twitter',
-        { successRedirect: '/', failureRedirect: '/login' }
-    ));
+    app.get('/auth/twitter/callback', passport.authenticate('twitter'), function (req, res) {
+        res.redirect("http://bogodata.org");
+    });
 // Ruta de callback, a la que redirigirá tras autenticarse con Facebook.
 // En caso de fallo redirige a otra vista '/login'
-    app.get('/auth/facebook/callback', passport.authenticate('facebook',
-        { successRedirect: '/', failureRedirect: '/login' }
-    ));
-
+    app.get('/auth/facebook/callback', passport.authenticate('facebook'), , function (req, res) {
+        res.redirect("http://bogodata.org");
+    });
 }
