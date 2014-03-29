@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
-    <Placemark>
-        <name><%=name%></name>
-        <description><%=description%></description>
-        <% coordinates.forEach(function(coordinate) { %>
-        <Point>
-            <coordinates><%=coordinate%></coordinates>
-        </Point>
-        <% }) %>
-    </Placemark>
+    <Document>
+        <Placemark>
+            <name><%=name%></name>
+            <description><%=description%></description>
+            <% coordinates.forEach(function(coordinate) { %>
+            <Point>
+                <coordinates><%=coordinate%></coordinates>
+            </Point>
+            <% }) %>
+        </Placemark>
+    </Document>
 </kml>
