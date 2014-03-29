@@ -195,7 +195,6 @@ module.exports.getDatasetKml = function(req, res) {
             var readFileCallcack = function(error, template) {
 
                 var content = ejs.render(template, jsonKml);
-                res.
                 res.write(content);
                 res.end();
             };
