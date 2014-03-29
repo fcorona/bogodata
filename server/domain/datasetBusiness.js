@@ -46,9 +46,9 @@ module.exports.getAllDatasets = function(req, res) {
     Dataset.find(findCallback);
 };
 
-module.exports.getDatasetById = function(req, res) {
+module.exports.getDatasetByName = function(req, res) {
 
-    var getDatasetByIdCallback = function(error, result) {
+    var getDatasetByNameCallback = function(error, result) {
 
         if (error) {
             console.error(error);
@@ -58,8 +58,8 @@ module.exports.getDatasetById = function(req, res) {
         }
     };
 
-    var datasetId = req.params.datasetId;
-    Dataset.findById(datasetId, getDatasetByIdCallback);
+    var datasetName = req.params.datasetName;
+    Dataset.findOne({ name: datasetName }, getDatasetByNameCallback);
 };
 
 function reportDataMatchesDatasetDataTemplate(dataTemplate, reportData) {
@@ -86,7 +86,7 @@ function reportDataMatchesDatasetDataTemplate(dataTemplate, reportData) {
 
 module.exports.addReportToDataset = function(req, res) {
 
-    var getDatasetByIdCallback = function(error, dataset) {
+    var getDatasetByNameCallback = function(error, dataset) {
 
         if (error) {
 
@@ -113,14 +113,14 @@ module.exports.addReportToDataset = function(req, res) {
         }
     };
 
-    var datasetId = req.params.datasetId;
+    var datasetName = req.params.datasetName;
     var newReport = req.body;
-    Dataset.findById(datasetId, getDatasetByIdCallback);
+    Dataset.findOne({ name: datasetName }, getDatasetByNameCallback);
 };
 
 module.exports.getReportsFromDataset = function(req, res) {
 
-    var getDatasetByIdCallback = function(error, dataset) {
+    var getDatasetByNameCallback = function(error, dataset) {
 
         if (error) {
             console.error(error);
@@ -130,13 +130,13 @@ module.exports.getReportsFromDataset = function(req, res) {
         }
     };
 
-    var datasetId = req.params.datasetId;
-    Dataset.findById(datasetId, getDatasetByIdCallback);
+    var datasetName = req.params.datasetName;
+    Dataset.findOne({ name: datasetName }, getDatasetByNameCallback);
 };
 
 module.exports.getReportFromDataset = function(req, res) {
 
-    var getDatasetByIdCallback = function(error, dataset) {
+    var getDatasetByNameCallback = function(error, dataset) {
 
         if (error) {
             console.error(error);
@@ -146,7 +146,7 @@ module.exports.getReportFromDataset = function(req, res) {
         }
     };
 
-    var datasetId = req.params.datasetId;
+    var datasetName = req.params.datasetName;
     var reportId = req.params.reportId;
-    Dataset.findById(datasetId, getDatasetByIdCallback);
+    Dataset.findOne({ name: datasetName }, getDatasetByNameCallback);
 };
