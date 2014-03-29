@@ -1,6 +1,18 @@
 var http = require('http');
+var Chance = require('chance');
+var chance = new Chance();
 
 function getNewDataset(datasetNumber) {
+
+    var tiposRobo = ["moto", "banco", "residencia", "automovil", "personal"];
+
+    console.log("Available tiposRobo:"+tiposRobo);
+
+    var latitude = chance.floating({min: 4.47, max: 4.70, fixed: 7});
+    var longitude = chance.floating({min: -74.20, max: -74.04, fixed: 7});
+
+    console.log("Latitude: "+latitude);
+    console.log("Longitude: "+longitude);
 
     var newDataset = {
         type: 1,
@@ -14,14 +26,13 @@ function getNewDataset(datasetNumber) {
         },
         reports: [
             {
-            latitude: 123 + datasetNumber,
-            longitude: 234 + datasetNumber,
+            latitude: latitude,
+            longitude: longitude,
             detail: 'detail' + datasetNumber,
             status: 'NEW' + datasetNumber,
             date: '2014-03-29',
             data: {
-                tipoRobo: 'llaves de la casa ' + datasetNumber
-
+                tipoRobo: tiposRobo[Math.floor(Math.random()*tiposRobo.length)]
             },
             votes: [
                 {
@@ -41,14 +52,22 @@ function getNewDataset(datasetNumber) {
         ]
     };
 
+    console.log("New dataset: "+newDataset);
+
     return newDataset;
 };
 
 function makeHttpPostRequest(numberOfRequests) {
 
+    console.log("starting "+numberOfRequests);
+
     for (var i = 0; i < numberOfRequests; i++) {
 
+        console.log("Inserting dataset #"+i);
+
         var postData = JSON.stringify(getNewDataset(i));
+
+        console.log("*****************"+postData);
 
         var postOptions = {
 
@@ -72,6 +91,8 @@ function makeHttpPostRequest(numberOfRequests) {
 
         postRequest.write(postData);
         postRequest.end();
+
+        console.log("Finished");
     }
 };
 
