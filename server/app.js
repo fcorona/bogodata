@@ -6,7 +6,7 @@ var passport = require('passport');
 
 // models import and passport configuration
 require('./models/user').model();
-//require('./models/dataset').model();
+require('./models/dataset').model();
 require('./domain/passport')(passport);
 
 //MongoDB connection

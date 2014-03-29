@@ -7,4 +7,8 @@ module.exports = function(app, passport) {
     app.get('/datasets', datasetBusiness.getAllDatasets);
 
     app.get('/datasets/:datasetId', datasetBusiness.getDatasetById);
+
+    app.post('/datasets/:datasetId/reports', datasetBusiness.addReportToDataset);
+
+    app.get('/datasets/:datasetId/reports/:reportId', datasetBusiness.getReportFromDataset);
 };
