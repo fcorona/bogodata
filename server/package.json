@@ -1,0 +1,9 @@
+{
+  "name": "open-data-hackathon",
+  "description": "App for the open data hackathon 2104-03-08",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x"
+  }
+}
