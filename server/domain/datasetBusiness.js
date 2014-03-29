@@ -160,7 +160,7 @@ function getKmlCoordinates(datasetReports) {
 
     for (var i = 0; i < datasetReports.length; i++) {
 
-        var reportCoordinates = datasetReports[i].latitude + ',' + datasetReports[i].longitude + ',' + 0;
+        var reportCoordinates = datasetReports[i].longitude + ',' + datasetReports[i].latitude + ',' + 0;
         coordinatesArray.push(reportCoordinates);
     }
 
@@ -195,6 +195,7 @@ module.exports.getDatasetKml = function(req, res) {
             var readFileCallcack = function(error, template) {
 
                 var content = ejs.render(template, jsonKml);
+                res.
                 res.write(content);
                 res.end();
             };
