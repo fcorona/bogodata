@@ -22,7 +22,6 @@ BogoData.setRoutes = function () {
         }).done(function (data) {
                 var encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), BogoData.options.passphrase);
                 //var decrypted = CryptoJS.AES.decrypt(encrypted, BogoData.options.passphrase);
-
                 if (data) {
                     $("#signInButton").hide();
                     $("#signOutButton").show();
@@ -51,6 +50,67 @@ BogoData.showSignIn = function () {
     });
 }
 
+BogoData.setUpActions = function () {
+    google.maps.event.addListener(BogoData.map, "click", function (event) {
+
+        var templateLoaded = function (template) {
+
+            var html = $.tmpl(template).html();
+
+            var infowindow = new google.maps.InfoWindow({
+                content: html
+            });
+
+            var selectDatasetDialog = $("#selectDataset");
+
+            selectDatasetDialog.dialog({
+                modal: true
+            });
+
+            var placeMarker = function () {
+
+                if(BogoData.marker){
+                    BogoData.marker.setMap(null);
+                }
+
+               BogoData.marker = new google.maps.Marker({
+                    position: event.latLng,
+                    draggable: true,
+                    map: BogoData.map
+                });
+
+                infowindow.open(BogoData.map, BogoData.marker);
+
+                google.maps.event.addListener(BogoData.marker, "click", function () {
+                    infowindow.open(BogoData.map, BogoData.marker);
+                });
+            }
+
+            var options = $("#selectDatasetShowDatasets");
+
+            $.ajax({
+                url: "/datasets"
+            }).done(function (data) {
+                    $.each(data, function () {
+                        options.append($("<option />").val(this._id).text(this.title));
+                    });
+
+                    options.change(function () {
+                        selectDatasetDialog.dialog('close');
+                        placeMarker();
+                    });
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    options.append($("<option />").val(0).text("No hay datasets"));
+                });
+        }
+
+        //load template first
+        $.get('/templates/hurtosForm.html', templateLoaded);
+
+    });
+}
+
 BogoData.initMap = function () {
     var mapCanvas = document.getElementById('map_canvas');
     var mapOptions = {
@@ -61,38 +121,17 @@ BogoData.initMap = function () {
 
     var map = new google.maps.Map(mapCanvas, mapOptions);
 
-    var georssLayer = new google.maps.KmlLayer('http://api.flickr.com/services/feeds/geo/?g=322338@N20&lang=en-us&format=feed-georss');
-    georssLayer.setMap(map);
-
     BogoData.map = map;
 
-    var html = "<table>" +
-        "<tr><td>Name:</td> <td><input type='text' id='name'/> </td> </tr>" +
-        "<tr><td>Address:</td> <td><input type='text' id='address'/></td> </tr>" +
-        "<tr><td>Type:</td> <td><select id='type'>" +
-        "<option value='bar' SELECTED>bar</option>" +
-        "<option value='restaurant'>restaurant</option>" +
-        "</select> </td></tr>" +
-        "<tr><td></td><td><input type='button' value='Save & Close' onclick='saveData()'/></td></tr>";
-
-
-    var infowindow = new google.maps.InfoWindow({
-        content: html
-    });
-
-    google.maps.event.addListener(BogoData.map, "click", function (event) {
-        marker = new google.maps.Marker({
-            position: event.latLng,
-            map: BogoData.map
-        });
-        google.maps.event.addListener(marker, "click", function () {
-            infowindow.open(BogoData.map, marker);
-        });
-    });
+    BogoData.setUpActions();
 }
 
-BogoData.isLoggedIn = function () {
+BogoData.report = function(){
+    console.log("**************")
+}
 
+BogoData.cancelReport = function(){
+    BogoData.marker.setMap(null);
 }
 
 google.maps.event.addDomListener(window, 'load', BogoData.init);

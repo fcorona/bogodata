@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="form-group">
+        <label for="detail">Detalle</label>
+        <textarea name="detail" id="detail"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="tipoRobo">Tipo de Hurto</label>
+        <select name="tipoRobo" id="tipoRobo">
+            <option value="1">Hurto a Residencia</option>
+            <option value="2">Hurto a Automóvil</option>
+            <option value="3">Hurto a Motos</option>
+            <option value="4">Hurto a Banco</option>
+            <option value="5">Hurto a Persona</option>
+        </select>
+    </div>
+    <button type="button" class="btn btn-primary btn-xs" onclick="BogoData.report()">Reportar</button>
+    <button type="button" class="btn btn-primary btn-xs" onclick="BogoData.cancelReport()">Cancelar</button>
+</div>
