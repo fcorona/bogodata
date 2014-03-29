@@ -6,14 +6,40 @@ var BogoData = {};
 BogoData.options = {
     passphrase: 'dg76sdgdfg',
     localStorageItem: 'BgD0',
-    localStorageDataset: 'DseT'
+    localStorageDataset: 'DseT',
+    localStorageAllDatasets: 'ADseTs'
 };
 
 BogoData.markersArray = [];
 
 BogoData.init = function () {
     BogoData.initMap();
+    BogoData.loadLayers();
     BogoData.setRoutes();
+}
+
+BogoData.loadLayers = function () {
+    $.ajax({
+        url: "/datasets"
+    }).done(function (data) {
+            localStorage.setItem(BogoData.options.localStorageAllDatasets, JSON.stringify(data));
+
+            var templateLoaded = function (template) {
+
+                var html = $.tmpl(template, data).html();
+
+                var selectLayersDiv = $("#selectLayers");
+                selectLayersDiv.append(html);
+                selectLayersDiv.dialog({
+                    dialogClass: "no-close"
+                });
+            }
+
+            $.get('/templates/layers.html', templateLoaded);
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert("Error");
+        });
 }
 
 BogoData.setRoutes = function () {
@@ -89,28 +115,23 @@ BogoData.setUpActions = function () {
 
             var options = $("#selectDatasetShowDatasets");
 
-            $.ajax({
-                url: "/datasets"
-            }).done(function (data) {
-                    $.each(data, function () {
-                        options.append($("<option />").val(this._id).text(this.title));
-                    });
+            var dataSets = JSON.parse(localStorage.getItem(BogoData.options.localStorageAllDatasets));
 
-                    options.change(function () {
-                        var selected;
-                        $.each(data, function () {
-                            if (this._id === options.val()) {
-                                localStorage.setItem(BogoData.options.localStorageDataset, JSON.stringify(this));
-                            }
-                        });
+            $.each(dataSets, function () {
+                options.append($("<option />").val(this._id).text(this.title));
+            });
 
-                        selectDatasetDialog.dialog('close');
-                        placeMarker();
-                    });
-
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    options.append($("<option />").val(0).text("No hay datasets"));
+            options.change(function () {
+                var selected;
+                $.each(dataSets, function () {
+                    if (this._id === options.val()) {
+                        localStorage.setItem(BogoData.options.localStorageDataset, JSON.stringify(this));
+                    }
                 });
+
+                selectDatasetDialog.dialog('close');
+                placeMarker();
+            });
         }
 
         //load template first
@@ -152,7 +173,7 @@ BogoData.report = function () {
         type: "POST",
         data: postData
     }).done(function (data) {
-            console.log(data);
+            BogoData.cancelReport();
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR);
             console.log(textStatus);
