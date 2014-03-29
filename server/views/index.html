@@ -14,9 +14,28 @@
 <body>
 
 <div id="nav">
-    <div id="logo"><img src="/img/bogodata.png"/></div>
-    <a id="signInButton" href="#" onclick="BogoData.showSignIn()">Ingresar</a>
-    <a id="signOutButton" style="display: none;" href="/logout">Salir</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div id="logo"><img src="/img/bogodata.png"/></div>
+            </div>
+            <div class="col-md-1">
+                <a id="signInButton" onclick="BogoData.showSignIn()">
+                    <p><i class="fa fa-sign-in fa-5x"></i></p>
+                </a>
+            </div>
+            <div class="col-md-1">
+                <a id="signOutButton" style="display: none;" href="/logout">
+                    <p><i class="fa fa-caret-square-o-left fa-5x"></i></p>
+                </a>
+            </div>
+            <div class="col-md-1">
+                <a id="reportButton" href="#" onclick="BogoData.placeMarker()">
+                    <p><i class="fa fa-eye fa-5x"></i></p>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="map_canvas"></div>
@@ -38,7 +57,8 @@
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="/bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
 <script src="/js/lib/jquery.router.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+>
 <script src="/js/lib/crypto/aes.js"></script>
 <script src="/js/main.js"></script>
 
