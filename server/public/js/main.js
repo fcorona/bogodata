@@ -24,6 +24,19 @@ BogoData.loadLayers = function () {
     }).done(function (data) {
             localStorage.setItem(BogoData.options.localStorageAllDatasets, JSON.stringify(data));
 
+            var templateLoaded = function (template) {
+
+                var html = $.tmpl(template, data).html();
+
+                var selectLayersDiv = $("#selectLayers");
+                selectLayersDiv.append(html);
+                selectLayersDiv.dialog({
+                    dialogClass: "no-close"
+                });
+            }
+
+            $.get('/templates/layers.html', templateLoaded);
+
         }).fail(function (jqXHR, textStatus, errorThrown) {
             alert("Error");
         });
