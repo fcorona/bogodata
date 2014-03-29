@@ -6,11 +6,11 @@ module.exports = function(app, passport) {
 
     app.get('/datasets', datasetBusiness.getAllDatasets);
 
-    app.get('/datasets/:datasetId', datasetBusiness.getDatasetById);
+    app.get('/datasets/:datasetName', datasetBusiness.getDatasetByName);
 
-    app.post('/datasets/:datasetId/reports', datasetBusiness.addReportToDataset);
+    app.post('/datasets/:datasetName/reports', datasetBusiness.addReportToDataset);
 
-    app.get('/datasets/:datasetId/reports', datasetBusiness.getReportsFromDataset);
+    app.get('/datasets/:datasetName/reports', datasetBusiness.getReportsFromDataset);
 
-    app.get('/datasets/:datasetId/reports/:reportId', datasetBusiness.getReportFromDataset);
+    app.get('/datasets/:datasetName/reports/:reportId', datasetBusiness.getReportFromDataset);
 };
