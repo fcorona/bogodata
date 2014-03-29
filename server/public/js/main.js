@@ -16,6 +16,8 @@ BogoData.init = function () {
     BogoData.initMap();
     BogoData.loadLayers();
     BogoData.setRoutes();
+
+    BogoData.getHurtoAPersonas();
 }
 
 BogoData.toggleLayer = function (id, name) {
@@ -215,8 +217,18 @@ BogoData.setUpActions = function () {
             });
         }
 
+        var templateUrl = '/templates/hurtosForm.html';
+
+        var currentDataSet = JSON.parse(localStorage.getItem(BogoData.options.localStorageDataset));
+
+        console.log(currentDataSet);
+
+        if(currentDataSet.name == "Movilidad"){
+            templateUrl = '/templates/movilidadForm.html';
+        }
+
         //load template first
-        $.get('/templates/hurtosForm.html', templateLoaded);
+        $.get(templateUrl, templateLoaded);
 
     });
 }
@@ -276,8 +288,59 @@ BogoData.report = function () {
         });
 }
 
+BogoData.related = function(){
+
+    $("#stats").show();
+
+    $("#stats").dialog({
+        modal: true,
+        width: 430
+    });
+}
+
 BogoData.cancelReport = function () {
     BogoData.marker.setMap(null);
 }
+
+BogoData.getHurtoAPersonas = function() {
+
+
+    //var apis = []
+
+    $.ajax({
+        url: "http://api.bogotacomovamos.org/api/datas/82/?key=comovamos",
+        type: "GET"
+    }).done(function (data) {
+
+            var yearValueMap = data.datas;
+            var arrayKeys = Object.keys(yearValueMap);
+            var arrayValues = [];
+
+            console.log(arrayKeys);
+
+            for (var i = 0; i < arrayKeys.length; i++) {
+
+                var value = yearValueMap[arrayKeys[i]];
+                arrayValues.push(value);
+            }
+
+            console.log(arrayValues);
+
+            var data = {
+
+                labels: arrayKeys,
+                datasets: [{
+
+                    fillColor : "rgba(151,187,205,0.5)",
+                    strokeColor : "rgba(151,187,205,1)",
+                    data : arrayValues
+                }]
+            };
+
+
+            var ctx = document.getElementById("barChart").getContext("2d");
+            var barChart = new Chart(ctx).Bar(data);
+        });
+};
 
 google.maps.event.addDomListener(window, 'load', BogoData.init);
