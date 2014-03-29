@@ -18,6 +18,58 @@ BogoData.init = function () {
     BogoData.setRoutes();
 }
 
+BogoData.toggleLayer = function (id, name) {
+    var check = $("#layer_" + id);
+
+    if (check.is(':checked')) {
+        BogoData.togglePoints(id, name, false);
+    } else {
+        BogoData.togglePoints(id, name, true);
+    }
+}
+
+BogoData.markers = [];
+
+BogoData.togglePoints = function (id, name, hide) {
+    if (!hide) {
+        $.ajax({
+            url: "/datasets/" + name
+        }).done(function (data) {
+
+                //first delete all if any
+                if (!(typeof BogoData.markers[name] == 'undefined')) {
+                    $.each(BogoData.markers[name], function () {
+                        this.setMap(null);
+                    });
+                }
+
+                //then repopulate
+                $.each(data.reports, function () {
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(this.latitude, this.longitude),
+                        map: BogoData.map,
+                        title: this.title
+                    });
+
+                    if (typeof BogoData.markers[name] == 'undefined') {
+                        BogoData.markers[name] = [];
+                    }
+
+                    BogoData.markers[name].push(marker);
+                    marker.setMap(BogoData.map);
+                });
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert("Error");
+            });
+    } else {
+        if (!(typeof BogoData.markers[name] == 'undefined')) {
+            $.each(BogoData.markers[name], function () {
+                this.setMap(null);
+            });
+        }
+    }
+}
+
 BogoData.loadLayers = function () {
     $.ajax({
         url: "/datasets"
@@ -113,6 +165,8 @@ BogoData.setUpActions = function () {
             }
 
             var options = $("#selectDatasetShowDatasets");
+            //reset
+            options.find('option').remove().end().append('<option value="-1">Escoga una opción</option>');
 
             var dataSets = JSON.parse(localStorage.getItem(BogoData.options.localStorageAllDatasets));
 
@@ -152,15 +206,11 @@ BogoData.initMap = function () {
 
     var map = new google.maps.Map(mapCanvas, mapOptions);
 
-    var ctaLayer = new google.maps.KmlLayer('http://bogodata.org/datasets/Seguridad2/kml');
-    ctaLayer.setMap(map);
-
-    map.setCenter(bogota);
-
     BogoData.map = map;
 
     BogoData.setUpActions();
 }
+
 
 BogoData.report = function () {
 
@@ -181,6 +231,16 @@ BogoData.report = function () {
         data: postData
     }).done(function (data) {
             BogoData.cancelReport();
+            var currentDataSet = JSON.parse(localStorage.getItem(BogoData.options.localStorageDataset));
+
+            var check = $("#layer_" + currentDataSet._id);
+
+            check.prop('checked', true);
+
+            var isChecked = check.is(':checked');
+            //toggle all again
+            BogoData.togglePoints(currentDataSet._id, currentDataSet.name, !isChecked);
+
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR);
             console.log(textStatus);
